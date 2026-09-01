@@ -1,158 +1,188 @@
-# SoniCLI
+# 🎵 SoniCLI
+
+![Version](https://img.shields.io/badge/version-0.1.0-00ff87)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Termux-yellow)
+![Shell](https://img.shields.io/badge/shell-Bash-lightgrey)
 
 **A lightweight terminal music player for Linux and Termux.**
 
-Search. Stream. Listen. Without leaving your terminal.
+> Search. Stream. Listen. Without leaving your terminal.
 
-SoniCLI combines `yt-dlp`, `fzf`, and `mpv` behind a fast interactive CLI/TUI designed for Unix-like environments.
+SoniCLI brings music search and playback directly to the command line using a lightweight, keyboard-driven interface.
 
-## Features
+---
 
-- Search music from the terminal.
-- Interactive `fzf` result selection.
-- Audio playback powered by `mpv`.
-- Low-flicker terminal playback screen.
-- Pause, seek, and volume controls.
-- Direct search from the command line.
-- Installer that detects Termux, APT, pacman, or dnf environments.
-- Initial packaging templates for Debian and Termux.
+## ✨ Features
 
-## Supported environments
+- 🔎 Search for music from the terminal
+- 🎵 Stream online audio
+- ▶️ Playback powered by `mpv`
+- ⚡ Media extraction with `yt-dlp`
+- 🔍 Interactive selection with `fzf`
+- ⌨️ Keyboard playback controls
+- 📊 Lightweight terminal visualization
+- 🐧 Linux support
+- 📱 Termux support
+- 🔓 Open source
 
-- Termux on Android
-- Debian
-- Ubuntu
-- Kali Linux
-- Linux Mint
-- Pop!_OS
-- Arch Linux
-- Manjaro
-- Fedora
+---
 
-Other Unix-like systems may work when the required dependencies are installed manually.
+## 🚀 Quick Install
 
-## Quick start
+### Termux
+
+```bash
+pkg update
+pkg install git -y
+
+git clone https://github.com/gabrunix/sonicli.git
+cd sonicli
+chmod +x install.sh
+./install.sh
+```
+
+### Linux
 
 ```bash
 git clone https://github.com/gabrunix/sonicli.git
 cd sonicli
+chmod +x install.sh
 ./install.sh
+```
+
+Once installed:
+
+```bash
 sonicli
 ```
 
-Direct search:
+---
+
+## 🎧 Usage
+
+Launch the interactive player:
+
+```bash
+sonicli
+```
+
+Search directly:
 
 ```bash
 sonicli "Linkin Park Numb"
 ```
 
-## Usage
-
-```text
-sonicli                  Start interactive mode
-sonicli <search terms>   Search immediately
-sonicli --help           Show help
-sonicli --version        Show version
-```
-
-### Player controls
-
-```text
-Space   Pause / resume
-h       Seek backward 5 seconds
-l       Seek forward 5 seconds
-9       Volume -5
-0       Volume +5
-q       Quit playback
-```
-
-## Dependencies
-
-Core dependencies:
-
-- Bash
-- yt-dlp
-- mpv
-- fzf
-- jq
-- socat
-- figlet
-- Python
-
-`./install.sh` installs the supported system dependencies automatically where possible.
-
-## Project structure
-
-```text
-sonicli/
-├── bin/
-│   └── sonicli
-├── src/
-│   ├── colors.sh
-│   ├── player.sh
-│   ├── search.sh
-│   ├── ui.sh
-│   └── utils.sh
-├── packaging/
-│   ├── debian/
-│   └── termux/
-├── install.sh
-├── uninstall.sh
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── LICENSE
-├── README.md
-└── VERSION
-```
-
-## Packaging roadmap
-
-The initial installer provides a universal installation path. Package-manager distribution is planned in stages:
-
-1. GitHub Releases.
-2. Debian `.deb` package.
-3. Termux package recipe.
-4. Optional APT repository.
-5. Submission to community/official repositories where appropriate.
-
-## Development
-
-Run from the repository without installing:
+Show help:
 
 ```bash
-./bin/sonicli
+sonicli --help
 ```
 
-Syntax check:
+Show version:
 
 ```bash
-bash -n bin/sonicli src/*.sh install.sh uninstall.sh
+sonicli --version
 ```
-## License
 
-SoniCLI is released under the MIT License. See [LICENSE](LICENSE).
+---
 
-## Disclaimer
+## ⌨️ Controls
+
+```text
+SPACE    Play / Pause
+h        Seek backward
+l        Seek forward
+9        Volume down
+0        Volume up
+q        Quit
+```
+
+---
+
+## 📦 Requirements
+
+SoniCLI uses:
+
+- `yt-dlp`
+- `mpv`
+- `fzf`
+- `jq`
+- `socat`
+- `FIGlet`
+
+The installer handles supported dependencies automatically.
+
+See [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md) for third-party licensing information.
+
+---
+
+## 🐧 Platforms
+
+SoniCLI is designed for Unix-like environments.
+
+Currently targeted:
+
+- Termux / Android
+- Debian / Ubuntu
+- Kali Linux
+- Linux Mint
+- Pop!_OS
+- Arch Linux / Manjaro
+- Fedora
+
+> Platform support depends on the availability of the required packages.
+
+---
+
+## 🗺️ Roadmap
+
+- [x] Music search
+- [x] Interactive result selection
+- [x] mpv playback
+- [x] Keyboard controls
+- [x] Linux & Termux foundation
+- [ ] Favorites
+- [ ] Search history
+- [ ] Themes
+- [ ] Improved visualizer
+- [ ] Android media controls
+- [ ] Debian package
+- [ ] Termux package
+- [ ] Automated releases
+- [ ] SoniCLI v1.0
+
+---
+
+## 🤝 Contributing
+
+Contributions, bug reports and feature suggestions are welcome.
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for development and contribution guidelines.
+
+---
+
+## ⚖️ Disclaimer
 
 SoniCLI is an independent open-source terminal music player.
 
-SoniCLI does not host, distribute, or store media content.
-
-It uses external tools such as yt-dlp and mpv to access media requested by the user.
+SoniCLI does not host, distribute, or store media content. It uses external tools such as `yt-dlp` and `mpv` to access media requested by the user.
 
 Users are responsible for complying with the terms of service of the platforms they access and with applicable copyright laws.
 
 SoniCLI is not affiliated with YouTube, Google, yt-dlp, mpv, or any supported media platform.
 
-## Third-party software
+---
 
-SoniCLI depends on external open-source projects including:
+## 📜 License
 
-- yt-dlp
-- mpv
-- fzf
-- jq
-- socat
-- FIGlet
+SoniCLI is released under the **MIT License**.
 
-See `THIRD_PARTY_LICENSES.md` for details.
+See [`LICENSE`](LICENSE) for details.
+
+---
+
+<p align="center">
+  <strong>SoniCLI</strong><br>
+  Search • Stream • Listen • Terminal
+</p>
