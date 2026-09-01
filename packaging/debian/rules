@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+
+override_dh_auto_install:
+	install -Dm755 bin/sonicli debian/sonicli/usr/bin/sonicli
+	install -Dm644 src/colors.sh debian/sonicli/usr/lib/sonicli/colors.sh
+	install -Dm644 src/utils.sh debian/sonicli/usr/lib/sonicli/utils.sh
+	install -Dm644 src/ui.sh debian/sonicli/usr/lib/sonicli/ui.sh
+	install -Dm644 src/search.sh debian/sonicli/usr/lib/sonicli/search.sh
+	install -Dm644 src/player.sh debian/sonicli/usr/lib/sonicli/player.sh
+	install -Dm644 VERSION debian/sonicli/usr/share/sonicli/VERSION

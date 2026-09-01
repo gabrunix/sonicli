@@ -1,0 +1,15 @@
+Source: sonicli
+Section: sound
+Priority: optional
+Maintainer: SoniCLI Contributors
+Standards-Version: 4.6.2
+Build-Depends: debhelper-compat (= 13)
+Rules-Requires-Root: no
+
+Package: sonicli
+Architecture: all
+Depends: bash, mpv, fzf, jq, socat, figlet, python3
+Recommends: yt-dlp
+Description: lightweight terminal music player for Linux and Termux
+ SoniCLI provides an interactive terminal interface for searching and
+ streaming audio using yt-dlp, fzf and mpv.

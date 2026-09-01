@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+set -u
+
+SELF="$0"
+if command -v readlink >/dev/null 2>&1; then
+  RESOLVED=$(readlink -f "$SELF" 2>/dev/null || true)
+  [[ -n "$RESOLVED" ]] && SELF="$RESOLVED"
+fi
+BASE_DIR=$(cd "$(dirname "$SELF")/.." 2>/dev/null && pwd)
+
+# Installed mode keeps modules under lib/sonicli.
+if [[ ! -f "$BASE_DIR/src/utils.sh" ]]; then
+  if [[ -n "${PREFIX:-}" && -f "$PREFIX/lib/sonicli/utils.sh" ]]; then
+    LIB_DIR="$PREFIX/lib/sonicli"
+  elif [[ -f "/usr/lib/sonicli/utils.sh" ]]; then
+    LIB_DIR="/usr/lib/sonicli"
+  elif [[ -f "/usr/local/lib/sonicli/utils.sh" ]]; then
+    LIB_DIR="/usr/local/lib/sonicli"
+  else
+    printf 'SoniCLI: unable to locate runtime modules.\n' >&2
+    exit 1
+  fi
+else
+  LIB_DIR="$BASE_DIR/src"
+fi
+
+# shellcheck source=/dev/null
+source "$LIB_DIR/colors.sh"
+source "$LIB_DIR/utils.sh"
+source "$LIB_DIR/ui.sh"
+source "$LIB_DIR/search.sh"
+source "$LIB_DIR/player.sh"
+
+VERSION_FILE="$BASE_DIR/VERSION"
+if [[ -f "$VERSION_FILE" ]]; then
+  SONICLI_VERSION=$(cat "$VERSION_FILE")
+elif [[ -f "${PREFIX:-/usr}/share/sonicli/VERSION" ]]; then
+  SONICLI_VERSION=$(cat "${PREFIX:-/usr}/share/sonicli/VERSION")
+elif [[ -f "/usr/local/share/sonicli/VERSION" ]]; then
+  SONICLI_VERSION=$(cat "/usr/local/share/sonicli/VERSION")
+elif [[ -f "/usr/share/sonicli/VERSION" ]]; then
+  SONICLI_VERSION=$(cat "/usr/share/sonicli/VERSION")
+else
+  SONICLI_VERSION="0.1.0"
+fi
+
+show_help() {
+  cat <<HELP
+SoniCLI ${SONICLI_VERSION}
+A lightweight terminal music player for Linux and Termux.
+
+Usage:
+  sonicli                  Start interactive mode
+  sonicli <search terms>   Search immediately
+  sonicli -h, --help       Show this help
+  sonicli -v, --version    Show version
+
+Player controls:
+  Space   Pause/resume
+  h / l   Seek -5 / +5 seconds
+  9 / 0   Volume -5 / +5
+  q       Quit playback
+HELP
+}
+
+check_dependencies() {
+  local missing=() dep
+  for dep in yt-dlp fzf mpv jq socat figlet awk; do
+    command_exists "$dep" || missing+=("$dep")
+  done
+  ((${#missing[@]} == 0)) || sonicli_die "missing dependencies: ${missing[*]}. Run the SoniCLI installer."
+}
+
+main() {
+  case "${1:-}" in
+    -h|--help) show_help; exit 0 ;;
+    -v|--version) printf 'SoniCLI %s\n' "$SONICLI_VERSION"; exit 0 ;;
+  esac
+
+  check_dependencies
+  local query results selected title artist duration id
+  query="$*"
+
+  while true; do
+    sonicli_logo
+    if [[ -z "$query" ]]; then
+      printf '%b' "${GREEN2}Search music:${RESET} "
+      IFS= read -r query || exit 0
+    fi
+    [[ -n "$query" ]] || continue
+
+    printf '%b\n' "${GRAY}Searching for:${RESET} ${WHITE}${query}${RESET}"
+    results=$(sonicli_search "$query" || true)
+    if [[ -z "$results" ]]; then
+      printf '%b\n' "${RED}No results found.${RESET}"
+      query=''
+      sleep 1
+      continue
+    fi
+
+    selected=$(sonicli_choose_result "$results") || { query=''; continue; }
+    IFS=$'\t' read -r title artist duration id <<< "$selected"
+    [[ -n "$id" ]] || { query=''; continue; }
+    sonicli_play "$id" "$title" "$artist"
+
+    query=''
+  done
+}
+
+main "$@"

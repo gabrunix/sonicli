@@ -1,0 +1,7 @@
+*.log
+*.tmp
+.DS_Store
+.cache/
+release/
+*.deb
+*.pkg.tar.*
