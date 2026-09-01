@@ -128,11 +128,31 @@ Syntax check:
 ```bash
 bash -n bin/sonicli src/*.sh install.sh uninstall.sh
 ```
-
 ## License
 
 SoniCLI is released under the MIT License. See [LICENSE](LICENSE).
 
 ## Disclaimer
 
-SoniCLI is a terminal frontend around third-party tools and services. Users are responsible for complying with applicable platform terms, copyright rules, and local laws.
+SoniCLI is an independent open-source terminal music player.
+
+SoniCLI does not host, distribute, or store media content.
+
+It uses external tools such as yt-dlp and mpv to access media requested by the user.
+
+Users are responsible for complying with the terms of service of the platforms they access and with applicable copyright laws.
+
+SoniCLI is not affiliated with YouTube, Google, yt-dlp, mpv, or any supported media platform.
+
+## Third-party software
+
+SoniCLI depends on external open-source projects including:
+
+- yt-dlp
+- mpv
+- fzf
+- jq
+- socat
+- FIGlet
+
+See `THIRD_PARTY_LICENSES.md` for details.
